@@ -7,6 +7,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public String getTaskDiscription() {
+        return this.taskDiscription;
+    }
+
     public String getTaskStatus() {
         return (this.isDone ? "X" : " ");
     }
