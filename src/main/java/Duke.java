@@ -14,28 +14,52 @@ public class Duke {
     private static void showTasks() {
         System.out.println(line);
         for(int i =0; i <taskNum; i++) {
-            System.out.println("   > "+Integer.toString(i+1)+". "+taskList[i].getTaskDiscription());
+            System.out.println("   > "+Integer.toString(i+1)+".["+taskList[i].getTaskStatus()+"] "+taskList[i].getTaskDiscription());
         }
         System.out.println(line);
     }
+
     public static void main(String[] args) {
         init();
         Scanner in = new Scanner(System.in);
-        String command = in.nextLine();
-        
-        while(!command.equals("bye")) {
-            if (command.equals("list")) {
-                showTasks();
-            }
-            else {
-                System.out.println(line);
-                System.out.println("   > add: "+command);
-                System.out.println(line);
+        boolean isEnd = false;
 
-                taskList[taskNum++] = new Task(command);
+        while(!isEnd) {
+            String command = in.nextLine();
+            String splittedCommand[] = command.split(" ",2); 
+
+            switch (splittedCommand[0]){
+                case "list":
+                    showTasks();
+                    break;
+                case "mark":
+                    int idx = Integer.parseInt(splittedCommand[1])-1;
+                    taskList[idx].markAsDone();
+                    System.out.println(line);
+                    System.out.println("   > Nice! I've marked this task as done:");
+                    System.out.println("   > ["+taskList[idx].getTaskStatus()+"] "+taskList[idx].getTaskDiscription());
+                    System.out.println(line);
+                    break;
+                case "unmark":
+                    idx = Integer.parseInt(splittedCommand[1])-1;
+                    taskList[idx].unmark();
+                    System.out.println(line);
+                    System.out.println("   > OK, I've marked this task as not done yet:");
+                    System.out.println("   > ["+taskList[idx].getTaskStatus()+"] "+taskList[idx].getTaskDiscription());
+                    System.out.println(line);
+                    break;
+                case "bye":
+                    isEnd = true;
+                    break;
+                default:
+                    System.out.println(line);
+                    System.out.println("   > add: "+command);
+                    System.out.println(line);
+
+                    taskList[taskNum++] = new Task(command);
+                    break;
             }
 
-            command = in.nextLine();
         }
         
         System.out.println(line);
