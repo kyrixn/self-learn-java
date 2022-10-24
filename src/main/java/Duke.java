@@ -10,13 +10,35 @@ public class Duke {
         System.out.println("Hello! I'm Duke"+System.lineSeparator()+"What can I do for you?");
         System.out.println(line);
     }
-
-    private static void showTasks() {
+    
+    private static void listTasks() {
         System.out.println(line);
         for(int i =0; i <taskNum; i++) {
-            System.out.println("   > "+Integer.toString(i+1)+".["+taskList[i].getTaskStatus()+"] "+taskList[i].getTaskDiscription());
+            System.out.println("   > "+Integer.toString(i+1)+"." + taskList[i].toString());
         }
         System.out.println(line);
+    }
+
+    private static void markThisTask(int idx) {
+        taskList[idx].markAsDone();
+        System.out.println(line);
+        System.out.println("   > Nice! I've marked this task as done:");
+        System.out.println("   > "+taskList[idx].toString());
+        System.out.println(line);        
+    }
+
+    private static void unmarkThisTask(int idx) {
+        taskList[idx].unmark();
+        System.out.println(line);
+        System.out.println("   > OK, I've marked this task as not done yet:");
+        System.out.println("   > "+taskList[idx].toString());
+        System.out.println(line);
+    }
+
+    private static void addTask(Task taskDiscription) {
+        System.out.println(line+System.lineSeparator()+"Got it. I've added this task:");
+        System.out.println("   > "+taskDiscription.toString());
+        System.out.println("Now you have "+Integer.toString(taskNum)+" tasks in the list."+System.lineSeparator()+line);
     }
 
     public static void main(String[] args) {
@@ -30,34 +52,33 @@ public class Duke {
 
             switch (splittedCommand[0]){
                 case "list":
-                    showTasks();
+                    listTasks();
                     break;
                 case "mark":
                     int idx = Integer.parseInt(splittedCommand[1])-1;
-                    taskList[idx].markAsDone();
-                    System.out.println(line);
-                    System.out.println("   > Nice! I've marked this task as done:");
-                    System.out.println("   > ["+taskList[idx].getTaskStatus()+"] "+taskList[idx].getTaskDiscription());
-                    System.out.println(line);
+                    markThisTask(idx);
                     break;
                 case "unmark":
                     idx = Integer.parseInt(splittedCommand[1])-1;
-                    taskList[idx].unmark();
-                    System.out.println(line);
-                    System.out.println("   > OK, I've marked this task as not done yet:");
-                    System.out.println("   > ["+taskList[idx].getTaskStatus()+"] "+taskList[idx].getTaskDiscription());
-                    System.out.println(line);
+                    unmarkThisTask(idx);
                     break;
                 case "bye":
                     isEnd = true;
                     break;
-                default:
-                    System.out.println(line);
-                    System.out.println("   > add: "+command);
-                    System.out.println(line);
-
-                    taskList[taskNum++] = new Task(command);
+                case "todo":
+                    taskList[taskNum++] = new Todo(splittedCommand[1]);
+                    addTask(taskList[taskNum-1]);
                     break;
+                case "deadline":
+                    String splittedDiscription[] = splittedCommand[1].split("/",2);                    
+                    taskList[taskNum++] = new Deadline(splittedDiscription[0],splittedDiscription[1]);
+                    addTask(taskList[taskNum-1]);
+                    break;
+                case "event":
+                    splittedDiscription = splittedCommand[1].split("/",2);            
+                    taskList[taskNum++] = new Event(splittedDiscription[0],splittedDiscription[1]);
+                    addTask(taskList[taskNum-1]);   
+                    break;                 
             }
 
         }
