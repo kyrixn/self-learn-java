@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.TimerTask;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";
@@ -19,20 +20,32 @@ public class Duke {
         System.out.println(line);
     }
 
-    private static void markThisTask(int idx) {
-        taskList[idx].markAsDone();
-        System.out.println(line);
-        System.out.println("   > Nice! I've marked this task as done:");
-        System.out.println("   > "+taskList[idx].toString());
-        System.out.println(line);        
+    private static void markThisTask(String command) throws TaskNumberOutOfRange{
+        int idx = Integer.parseInt(command)-1;
+        if(idx >= taskNum || idx < 0) {
+            throw new TaskNumberOutOfRange("task number out of range!!");
+        }
+        else {
+            taskList[idx].markAsDone();
+            System.out.println(line);
+            System.out.println("   > Nice! I've marked this task as done:");
+            System.out.println("   > "+taskList[idx].toString());
+            System.out.println(line);
+        }        
     }
 
-    private static void unmarkThisTask(int idx) {
-        taskList[idx].unmark();
-        System.out.println(line);
-        System.out.println("   > OK, I've marked this task as not done yet:");
-        System.out.println("   > "+taskList[idx].toString());
-        System.out.println(line);
+    private static void unmarkThisTask(String command) throws TaskNumberOutOfRange{
+        int idx = Integer.parseInt(command)-1;
+        if(idx >= taskNum || idx < 0) {
+            throw new TaskNumberOutOfRange("task number out of range!!");
+        }
+        else {
+            taskList[idx].unmark();
+            System.out.println(line);
+            System.out.println("   > OK, I've marked this task as not done yet:");
+            System.out.println("   > "+taskList[idx].toString());
+            System.out.println(line);
+        }
     }
 
     private static void addTask(Task taskDiscription) {
@@ -55,12 +68,26 @@ public class Duke {
                     listTasks();
                     break;
                 case "mark":
-                    int idx = Integer.parseInt(splittedCommand[1])-1;
-                    markThisTask(idx);
+                    try {
+                        markThisTask(splittedCommand[1]);
+                    } catch (TaskNumberOutOfRange e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (NumberFormatException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    }
                     break;
                 case "unmark":
-                    idx = Integer.parseInt(splittedCommand[1])-1;
-                    unmarkThisTask(idx);
+                    try {
+                        unmarkThisTask(splittedCommand[1]);
+                    } catch (TaskNumberOutOfRange e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (NumberFormatException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    }
                     break;
                 case "bye":
                     isEnd = true;
@@ -70,16 +97,27 @@ public class Duke {
                     addTask(taskList[taskNum-1]);
                     break;
                 case "deadline":
-                    String splittedDiscription[] = splittedCommand[1].split("/",2);                    
-                    taskList[taskNum++] = new Deadline(splittedDiscription[0],splittedDiscription[1]);
-                    addTask(taskList[taskNum-1]);
+                    try {
+                        String splittedDiscription[] = splittedCommand[1].split("/",2);                    
+                        taskList[taskNum] = new Deadline(splittedDiscription[0],splittedDiscription[1]);
+                        addTask(taskList[taskNum]);
+                        taskNum++;
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/\" ");
+                    }
                     break;
                 case "event":
-                    splittedDiscription = splittedCommand[1].split("/",2);            
+                    String[] splittedDiscription = splittedCommand[1].split("/",2);            
                     taskList[taskNum++] = new Event(splittedDiscription[0],splittedDiscription[1]);
                     addTask(taskList[taskNum-1]);   
-                    break;                 
-            }
+                    break;    
+                default:
+                    System.out.println(line);
+                    System.out.println("Sorry, command not found");
+                    System.out.println(line);    
+                    break;       
+                }
+            System.out.println(taskNum);
 
         }
         
