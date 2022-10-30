@@ -93,8 +93,13 @@ public class Duke {
                     isEnd = true;
                     break;
                 case "todo":
-                    taskList[taskNum++] = new Todo(splittedCommand[1]);
-                    addTask(taskList[taskNum-1]);
+                    try {
+                        taskList[taskNum] = new Todo(splittedCommand[1]);
+                        addTask(taskList[taskNum]);
+                        taskNum++;
+                    } catch(LackOfTaskDetail e) {
+                        System.out.println("   > lack of task detail");
+                    }
                     break;
                 case "deadline":
                     try {
@@ -104,12 +109,21 @@ public class Duke {
                         taskNum++;
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/\" ");
+                    } catch (LackOfTaskDetail e) {
+                        System.out.println("   > lack of task detail!");
                     }
                     break;
                 case "event":
-                    String[] splittedDiscription = splittedCommand[1].split("/",2);            
-                    taskList[taskNum++] = new Event(splittedDiscription[0],splittedDiscription[1]);
-                    addTask(taskList[taskNum-1]);   
+                    try {
+                        String[] splittedDiscription = splittedCommand[1].split("/",2);            
+                        taskList[taskNum] = new Event(splittedDiscription[0],splittedDiscription[1]);
+                        addTask(taskList[taskNum]);
+                        taskNum++;   
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/\" ");
+                    } catch (LackOfTaskDetail e) {
+                        System.out.println("   > lack of task detail!");
+                    }
                     break;    
                 default:
                     System.out.println(line);
@@ -117,8 +131,6 @@ public class Duke {
                     System.out.println(line);    
                     break;       
                 }
-            System.out.println(taskNum);
-
         }
         
         System.out.println(line);

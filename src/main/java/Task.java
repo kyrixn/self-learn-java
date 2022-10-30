@@ -2,9 +2,13 @@ public class Task {
     protected String taskDiscription;
     protected boolean isDone;
 
-    public Task(String task) throws NoTaskDiscription{
+    public Task() throws LackOfTaskDetail {
+        
+    }
+
+    public Task(String task) throws LackOfTaskDetail{
         if (task.equals("")) {
-            throw new NoTaskDiscription("No task discription!");
+            throw new LackOfTaskDetail("No task discription!");
         }
         else{
             this.taskDiscription = task;

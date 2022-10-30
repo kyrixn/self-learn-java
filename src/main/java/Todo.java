@@ -1,5 +1,5 @@
 public class Todo extends Task {
-    public Todo(String task) {
+    public Todo(String task) throws LackOfTaskDetail{
         super(task);
     }
 

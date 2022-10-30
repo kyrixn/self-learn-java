@@ -1,12 +1,19 @@
+import java.io.NotActiveException;
+
 public class Deadline extends Task {
     String due;
-    
-    public Deadline(String discription, String due) throws NoTimeInformation {
+    String discription;
+
+    public Deadline() throws LackOfTaskDetail{
+        super();
+    }
+
+    public Deadline(String discription, String due) throws LackOfTaskDetail {
         super(discription);
-        this.due = due;
         if(due.equals("")) {
-            throw new NoTimeInformation("No time information!");    
+            throw new LackOfTaskDetail("No time information!");    
         }
+        this.due = due;
     }
 
     public String toString() {
