@@ -103,24 +103,24 @@ public class Duke {
                     break;
                 case "deadline":
                     try {
-                        String splittedDiscription[] = splittedCommand[1].split("/",2);                    
+                        String splittedDiscription[] = splittedCommand[1].split("/by ",2);                    
                         taskList[taskNum] = new Deadline(splittedDiscription[0],splittedDiscription[1]);
                         addTask(taskList[taskNum]);
                         taskNum++;
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/\" ");
+                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/by\" ");
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
                     }
                     break;
                 case "event":
                     try {
-                        String[] splittedDiscription = splittedCommand[1].split("/",2);            
+                        String[] splittedDiscription = splittedCommand[1].split("/at ",2);            
                         taskList[taskNum] = new Event(splittedDiscription[0],splittedDiscription[1]);
                         addTask(taskList[taskNum]);
                         taskNum++;   
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/\" ");
+                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/at\" ");
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
                     }
