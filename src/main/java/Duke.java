@@ -23,7 +23,7 @@ public class Duke {
     private static void markThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
         if(idx >= taskNum || idx < 0) {
-            throw new TaskNumberOutOfRange("task number out of range!!");
+            throw new TaskNumberOutOfRange("   > task number out of range!!");
         }
         else {
             taskList[idx].markAsDone();
@@ -127,7 +127,7 @@ public class Duke {
                     break;    
                 default:
                     System.out.println(line);
-                    System.out.println("Sorry, command not found");
+                    System.out.println("   > Sorry, command not found");
                     System.out.println(line);    
                     break;       
                 }
