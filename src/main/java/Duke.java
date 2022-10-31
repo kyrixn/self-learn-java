@@ -127,7 +127,7 @@ public class Duke {
                     break;    
                 default:
                     System.out.println(line);
-                    System.out.println("Sorry, command not found");
+                    System.out.println("Sorry, command not found"+System.lineSeparator()+"plz enter again!");
                     System.out.println(line);    
                     break;       
                 }
