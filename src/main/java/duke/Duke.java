@@ -123,7 +123,7 @@ public class Duke {
                         addTask(taskList[taskNum]);
                         taskNum++;   
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/at\" ");
+                        System.out.println("   > Please enter a task and a time behind the task seperated by \"/at\" ");
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
                     }
