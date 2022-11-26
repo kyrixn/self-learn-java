@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TimerTask;
@@ -7,7 +9,6 @@ import exceptions.*;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";
-    // private static Task taskList[] = new Task[100];
     private static ArrayList<Task> taskList = new ArrayList<>();
 
     private static void init() {        
@@ -54,6 +55,7 @@ public class Duke {
 
     private static void deleteThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
+        System.out.println(idx);
         if(idx >= taskList.size() || idx < 0) {
             throw new TaskNumberOutOfRange("   > task number out of range!!");
         }
@@ -68,6 +70,26 @@ public class Duke {
         System.out.println(line+System.lineSeparator()+"Got it. I've added this task:");
         System.out.println("   > "+taskDiscription.toString());
         System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
+    }
+
+    private static String changeTaskDescription() {
+        String content = "";
+        for(int i=0; i <taskList.size(); i++) {
+            Task curtask = taskList.get(i);
+            content += (Integer.toString(i) + " | ");
+            content += ((curtask.getTaskStatus().equals("X") ? "1" : "0") + " | "+ curtask.getTaskDiscription());
+            if(!curtask.getClass().getName().equals("commands.Todo")) {
+                content += ("| "+taskList.get(i).getDue());
+            }
+            content += System.lineSeparator();
+        }
+        return content;
+    }
+
+    private static void autoSave() throws IOException{
+        FileWriter fw = new FileWriter("./data/duke.txt");
+        fw.write(changeTaskDescription());
+        fw.close();
     }
 
     public static void main(String[] args) {
@@ -93,6 +115,11 @@ public class Duke {
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "unmark":
                     try {
@@ -103,6 +130,11 @@ public class Duke {
                         System.out.println("   > Please enter a valid NUMBER!");
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
+                    }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "bye":
@@ -116,6 +148,11 @@ public class Duke {
                     } catch(LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail");
                     }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "deadline":
                     try {
@@ -127,6 +164,11 @@ public class Duke {
                         System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/by\" ");
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
+                    }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "event":
@@ -140,14 +182,26 @@ public class Duke {
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
                     }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "delete":
                     try {
                         deleteThisTask(splittedCommand[1]);
                     } catch (TaskNumberOutOfRange e) {
                         System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
+                    }
+                    try {
+                        autoSave();
+                    } catch(IOException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;                    
                 default:
@@ -157,7 +211,7 @@ public class Duke {
                     break;       
                 }
         }
-        
+
         System.out.println(line);
         System.out.println("    > Bye. Hope to see you again soon!");
         System.out.println(line);

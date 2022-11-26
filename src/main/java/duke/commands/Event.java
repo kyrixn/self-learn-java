@@ -3,7 +3,7 @@ package commands;
 import exceptions.LackOfTaskDetail;
 
 public class Event extends Task{
-    private String due;
+    protected String due;
     
     private static boolean containTime(String s) {
         boolean haveContent = false;
@@ -24,6 +24,10 @@ public class Event extends Task{
             throw new LackOfTaskDetail("No time information!");
         }
         this.due = due;
+    }
+
+    public String getDue() {
+        return this.due;
     }
 
     public String toString() {
