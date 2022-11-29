@@ -6,7 +6,7 @@ import java.io.NotActiveException;
 import javax.swing.SortingFocusTraversalPolicy;
 
 public class Deadline extends Task {
-    String due;
+    protected String due;
 
     private static boolean containTime(String s) {
         boolean haveContent = false;
@@ -27,6 +27,10 @@ public class Deadline extends Task {
             throw new LackOfTaskDetail("No time information!");    
         }
         this.due = due;
+    }
+
+    public String getDue() {
+        return this.due;
     }
 
     public String toString() {
