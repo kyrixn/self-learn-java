@@ -1,6 +1,6 @@
-package commands;
+package duke.commands;
 
-import exceptions.LackOfTaskDetail;
+import duke.exceptions.LackOfTaskDetail;
 
 public class Todo extends Task {
     public Todo(String task) throws LackOfTaskDetail{

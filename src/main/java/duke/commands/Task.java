@@ -1,6 +1,6 @@
-package commands;
+package duke.commands;
 
-import exceptions.LackOfTaskDetail;
+import duke.exceptions.LackOfTaskDetail;
 
 public class Task {
     protected String taskDiscription;

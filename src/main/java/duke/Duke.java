@@ -1,3 +1,5 @@
+package duke;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -5,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TimerTask;
 
-import commands.*;
-import exceptions.*;
+import duke.commands.*;
+import duke.exceptions.*;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";

@@ -1,4 +1,4 @@
-package exceptions;
+package duke.exceptions;
 
 public class LackOfTaskDetail extends DukeException {
     public LackOfTaskDetail (String s) {
