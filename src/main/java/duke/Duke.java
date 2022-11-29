@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TimerTask;
 
@@ -6,8 +7,8 @@ import exceptions.*;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";
-    private static Task taskList[] = new Task[100];
-    private static int taskNum = 0;
+    // private static Task taskList[] = new Task[100];
+    private static ArrayList<Task> taskList = new ArrayList<>();
 
     private static void init() {        
         System.out.println(line);
@@ -17,44 +18,56 @@ public class Duke {
     
     private static void listTasks() {
         System.out.println(line);
-        for(int i =0; i <taskNum; i++) {
-            System.out.println("   > "+Integer.toString(i+1)+"." + taskList[i].toString());
+        for(int i =0; i <taskList.size(); i++) {
+            System.out.println("   > "+Integer.toString(i+1)+"." + taskList.get(i).toString());
         }
         System.out.println(line);
     }
 
     private static void markThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
-        if(idx >= taskNum || idx < 0) {
+        if(idx >= taskList.size() || idx < 0) {
             throw new TaskNumberOutOfRange("   > task number out of range!!");
         }
         else {
-            taskList[idx].markAsDone();
+            taskList.get(idx).markAsDone();
             System.out.println(line);
             System.out.println("   > Nice! I've marked this task as done:");
-            System.out.println("   > "+taskList[idx].toString());
+            System.out.println("   > "+taskList.get(idx).toString());
             System.out.println(line);
         }        
     }
 
     private static void unmarkThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
-        if(idx >= taskNum || idx < 0) {
+        if(idx >= taskList.size() || idx < 0) {
             throw new TaskNumberOutOfRange("task number out of range!!");
         }
         else {
-            taskList[idx].unmark();
+            taskList.get(idx).unmark();
             System.out.println(line);
             System.out.println("   > OK, I've marked this task as not done yet:");
-            System.out.println("   > "+taskList[idx].toString());
+            System.out.println("   > "+taskList.get(idx).toString());
             System.out.println(line);
         }
     }
 
-    private static void addTask(Task taskDiscription) {
+    private static void deleteThisTask(String command) throws TaskNumberOutOfRange{
+        int idx = Integer.parseInt(command)-1;
+        if(idx >= taskList.size() || idx < 0) {
+            throw new TaskNumberOutOfRange("   > task number out of range!!");
+        }
+        Task taskDiscription = taskList.get(idx);
+        taskList.remove(idx);
+        System.out.println(line+System.lineSeparator()+"Noted. I've removed this task:");
+        System.out.println("   > "+taskDiscription.toString());
+        System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
+    }
+
+    private static void showAddTask(Task taskDiscription) {
         System.out.println(line+System.lineSeparator()+"Got it. I've added this task:");
         System.out.println("   > "+taskDiscription.toString());
-        System.out.println("Now you have "+Integer.toString(taskNum)+" tasks in the list."+System.lineSeparator()+line);
+        System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
     }
 
     public static void main(String[] args) {
@@ -97,9 +110,9 @@ public class Duke {
                     break;
                 case "todo":
                     try {
-                        taskList[taskNum] = new Todo(splittedCommand[1]);
-                        addTask(taskList[taskNum]);
-                        taskNum++;
+                        Todo newtodo = new Todo(splittedCommand[1]);
+                        taskList.add(newtodo);
+                        showAddTask(newtodo);
                     } catch(LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail");
                     }
@@ -107,9 +120,9 @@ public class Duke {
                 case "deadline":
                     try {
                         String splittedDiscription[] = splittedCommand[1].split("/by ",2);                    
-                        taskList[taskNum] = new Deadline(splittedDiscription[0],splittedDiscription[1]);
-                        addTask(taskList[taskNum]);
-                        taskNum++;
+                        Deadline newddl = new Deadline(splittedDiscription[0],splittedDiscription[1]);
+                        taskList.add(newddl);
+                        showAddTask(newddl);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/by\" ");
                     } catch (LackOfTaskDetail e) {
@@ -119,15 +132,24 @@ public class Duke {
                 case "event":
                     try {
                         String[] splittedDiscription = splittedCommand[1].split("/at ",2);            
-                        taskList[taskNum] = new Event(splittedDiscription[0],splittedDiscription[1]);
-                        addTask(taskList[taskNum]);
-                        taskNum++;   
+                        Event newevent= new Event(splittedDiscription[0],splittedDiscription[1]);
+                        taskList.add(newevent);
+                        showAddTask(newevent);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("   > Please enter a task and a time behind the task seperated by \"/at\" ");
                     } catch (LackOfTaskDetail e) {
                         System.out.println("   > lack of task detail!");
                     }
-                    break;    
+                    break;
+                case "delete":
+                    try {
+                        deleteThisTask(splittedCommand[1]);
+                    } catch (TaskNumberOutOfRange e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    } catch (NumberFormatException e) {
+                        System.out.println("   > Please enter a valid NUMBER!");
+                    }
+                    break;                    
                 default:
                     System.out.println(line);
                     System.out.println("   > Sorry, command not found");
