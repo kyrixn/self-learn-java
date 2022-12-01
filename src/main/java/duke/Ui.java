@@ -7,7 +7,7 @@ public class Ui {
 
     public Ui(){}
 
-    public void printHello() {
+    public static void printHello() {
         System.out.println(line);
         System.out.println("Hello! I'm Duke"+System.lineSeparator()+"What can I do for you?");
         System.out.println(line);        
@@ -21,7 +21,10 @@ public class Ui {
         System.out.println(line);
     }
 
-    public void printSepLine() {
-
+    public static void showMark(String task) {;
+        System.out.println(line);
+        System.out.println("   > Nice! I've marked this task as done:");
+        System.out.println("   > " + task);
+        System.out.println(line);            
     }
 }

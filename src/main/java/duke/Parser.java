@@ -4,23 +4,23 @@ import duke.exceptions.*;
 import duke.TaskList;
 
 public class Parser {
-    protected static String splittedCommand[]; 
+    protected String splittedCommand[]; 
 
     public Parser(){}
 
-    public static String parseCommand(String com) {
+    public String parseCommand(String com) {
         String splittedCommand[] = com.split(" ",2); 
         return splittedCommand[0];
     }
 
-    public static int getTaskIndex(int tasksize) throws TaskNumberOutOfRange {
+    public int getTaskIndex(int tasksize) throws TaskNumberOutOfRange {
         if (splittedCommand.length == 1 || splittedCommand[1].equals("")) {
-            throw new TaskNumberOutOfRange("no task number!");
+            throw new TaskNumberOutOfRange("    > no task number!");
         }
 
         int idx = Integer.parseInt(splittedCommand[1])-1;
         if(idx < 0 || idx > tasksize) {
-            throw new TaskNumberOutOfRange("task index out of range!");
+            throw new TaskNumberOutOfRange("    > task index out of range!");
         }
         else {
             return idx;

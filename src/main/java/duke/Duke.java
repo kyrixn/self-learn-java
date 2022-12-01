@@ -15,17 +15,7 @@ import duke.exceptions.*;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";
-    private static ArrayList<Task> taskList = new ArrayList<>();
-    
-    //done
-    private static void listTasks() {
-        System.out.println(line);
-        for(int i =0; i <taskList.size(); i++) {
-            System.out.println("   > "+Integer.toString(i+1)+"." + taskList.get(i).toString());
-        }
-        System.out.println(line);
-    }
-    
+
     //done
     private static void markThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
@@ -74,75 +64,49 @@ public class Duke {
         System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
     }
 
-    private static String changeTaskDescription() {
-        String content = "";
-        for(int i=0; i <taskList.size(); i++) {
-            Task curtask = taskList.get(i);
-            content += (Integer.toString(i) + " | ");
-            content += ((curtask.getTaskStatus().equals("X") ? "1" : "0") + " | "+ curtask.getTaskDiscription());
-            if(!curtask.getClass().getName().equals("commands.Todo")) {
-                content += ("| "+taskList.get(i).getDue());
-            }
-            content += System.lineSeparator();
-        }
-        return content;
-    }
-
-    private static void autoSave() throws IOException{
-        File f = new File("./data/duke.txt");
-        if (!f.getParentFile().exists()) {
-            f.getParentFile().mkdirs();
-        }
-        FileWriter fw = new FileWriter("./data/duke.txt");
-        fw.write(changeTaskDescription());
-        fw.close();
-    }
-
     public static void main(String[] args) {        
         Ui ui = new Ui();
         Parser parser = new Parser();
-        // TaskList taskList = new TaskList();
+        TaskList tasks = new TaskList();
         Scanner in = new Scanner(System.in);
         boolean isEnd = false;
 
-        ui.printHello();
+        Ui.printHello();
 
         while(!isEnd) {
             String command = in.nextLine();
-            String splittedCommand[] = command.split(" ",2); 
+            String commandtype = parser.parseCommand(command);
 
-            switch (splittedCommand[0]){
+            switch (commandtype){
                 case "list":
-                    listTasks();
+                    Ui.listTasks(tasks);
                     break;
                 case "mark":
                     try {
-                        markThisTask(splittedCommand[1]);
+                        int idx = parser.getTaskIndex(tasks);
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
+                        System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
+                    tasks.markThisTask(idx);
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case "unmark":
                     try {
-                        unmarkThisTask(splittedCommand[1]);
+                        idx = parser.getTaskIndex(tasks);
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
+                        System.out.println(e,getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
+                    tasks.unMarkThisTask(idx);
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
