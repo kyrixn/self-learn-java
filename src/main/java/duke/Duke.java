@@ -7,19 +7,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TimerTask;
 
+import duke.Ui;
+import duke.Parser;
+import duke.TaskList;
 import duke.commands.*;
 import duke.exceptions.*;
 
 public class Duke {
     private static String line = "---------------------------------------------------------";
     private static ArrayList<Task> taskList = new ArrayList<>();
-
-    private static void init() {        
-        System.out.println(line);
-        System.out.println("Hello! I'm Duke"+System.lineSeparator()+"What can I do for you?");
-        System.out.println(line);
-    }
     
+    //done
     private static void listTasks() {
         System.out.println(line);
         for(int i =0; i <taskList.size(); i++) {
@@ -27,7 +25,8 @@ public class Duke {
         }
         System.out.println(line);
     }
-
+    
+    //done
     private static void markThisTask(String command) throws TaskNumberOutOfRange{
         int idx = Integer.parseInt(command)-1;
         if(idx >= taskList.size() || idx < 0) {
@@ -99,10 +98,14 @@ public class Duke {
         fw.close();
     }
 
-    public static void main(String[] args) {
-        init();
+    public static void main(String[] args) {        
+        Ui ui = new Ui();
+        Parser parser = new Parser();
+        // TaskList taskList = new TaskList();
         Scanner in = new Scanner(System.in);
         boolean isEnd = false;
+
+        ui.printHello();
 
         while(!isEnd) {
             String command = in.nextLine();
