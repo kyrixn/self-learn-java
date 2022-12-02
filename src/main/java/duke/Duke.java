@@ -95,12 +95,13 @@ public class Duke {
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
+                    Ui.showMark(tasks.getDescription(idx));
                     break;
                 case "unmark":
                     try {
                         idx = parser.getTaskIndex(tasks);
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println(e,getMessage());
+                        System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
@@ -110,6 +111,7 @@ public class Duke {
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
+                    Ui.showUnmark(tasks.getDescription(idx));
                     break;
                 case "bye":
                     isEnd = true;
@@ -123,7 +125,7 @@ public class Duke {
                         System.out.println("   > lack of task detail");
                     }
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -140,7 +142,7 @@ public class Duke {
                         System.out.println("   > lack of task detail!");
                     }
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -157,39 +159,34 @@ public class Duke {
                         System.out.println("   > lack of task detail!");
                     }
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case "delete":
                     try {
-                        deleteThisTask(splittedCommand[1]);
+                        idx = parser.getTaskIndex(tasks);
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a valid NUMBER!");
+                        System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
+                    Ui.showDelete(tasks.getDescription(idx), tasks.getSize());
+                    tasks.deleteThisTask(idx);
                     try {
-                        autoSave();
+                        Storage.autoSave();
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
                     break;                    
                 default:
-                    System.out.println(line);
-                    System.out.println("   > Sorry, command not found");
-                    System.out.println(line);    
-                    break;       
+                    Ui.printNoCommand();
+                    break;
                 }
         }
 
-        System.out.println(line);
-        System.out.println("    > Bye. Hope to see you again soon!");
-        System.out.println(line);
-
+        Ui.printBye();
         in.close();
     }
 }

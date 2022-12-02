@@ -32,4 +32,8 @@ public class TaskList {
     public String getTask(int idx) {
         return tasklist.get(idx).toString();
     }
+
+    public void deleteThisTask(int idx) {
+        tasklist.remove(idx);
+    }
 }

@@ -13,6 +13,18 @@ public class Ui {
         System.out.println(line);        
     }
 
+    public static void printBye() {
+        System.out.println(line);
+        System.out.println("    > Bye. Hope to see you again soon!");
+        System.out.println(line); 
+    }
+
+    public static void printNoCommand() {
+        System.out.println(line);
+        System.out.println("   > Sorry, command not found");
+        System.out.println(line);    
+    }
+
     public static void listTasks(TaskList tasks) {
         System.out.println(line);
         for(int i =0; i <tasks.getSize(); i++) {
@@ -21,10 +33,23 @@ public class Ui {
         System.out.println(line);
     }
 
-    public static void showMark(String task) {;
+    public static void showMark(String task) {
         System.out.println(line);
         System.out.println("   > Nice! I've marked this task as done:");
         System.out.println("   > " + task);
         System.out.println(line);            
+    }
+
+    public static void showUnmark(String task) {
+        System.out.println(line);
+        System.out.println("   > Noted. I've unmarked this task:");
+        System.out.println("   > " + task);
+        System.out.println(line);            
+    }
+
+    public static void showDelete(String task, int size) {
+        System.out.println(line+System.lineSeparator()+"Noted. I've removed this task:");
+        System.out.println("   > "+ task);
+        System.out.println("Now you have "+Integer.toString(size)+" tasks in the list."+System.lineSeparator()+line);
     }
 }
