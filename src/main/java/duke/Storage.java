@@ -26,11 +26,11 @@ public class Storage {
     }
 
     public static void autoSave(ArrayList<Task> tasks) throws IOException{
-        File f = new File(".duke/data/duke.txt");
+        File f = new File("duke/data/duke.txt");
         if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
-        FileWriter fw = new FileWriter("./data/duke.txt");
+        FileWriter fw = new FileWriter("duke/data/duke.txt");
         fw.write(changeTaskDescription(tasks));
         fw.close();
     }

@@ -1,6 +1,7 @@
 package duke;
 
-import duke.TaskList;
+import duke.commands.Task;
+import java.util.ArrayList;
 
 public class Ui {
     protected static String line = "---------------------------------------------------------";
@@ -21,14 +22,19 @@ public class Ui {
 
     public static void printNoCommand() {
         System.out.println(line);
-        System.out.println("   > Sorry, command not found");
+        System.out.print("   > Sorry, command not found" + System.lineSeparator()+"enter again: ");
         System.out.println(line);    
     }
 
-    public static void listTasks(TaskList tasks) {
+    public static void listTasks(ArrayList<Task> tasks) {
         System.out.println(line);
-        for(int i =0; i <tasks.getSize(); i++) {
-            System.out.println("   > "+Integer.toString(i+1)+"." + tasks.getDescription(i));
+        if(tasks.size() == 0) {
+            System.out.println("No task");
+            System.out.println(line);
+            return;
+        }
+        for(int i =0; i <tasks.size(); i++) {
+            System.out.println("   > "+Integer.toString(i+1)+"." + tasks.get(i).toString());
         }
         System.out.println(line);
     }

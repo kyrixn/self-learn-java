@@ -18,64 +18,61 @@ public class Duke {
         boolean isEnd = false;
 
         Ui.printHello();
-
         while(!isEnd) {
             String command = in.nextLine();
             String commandtype = parser.parseCommand(command);
-            int idx =0;
 
             switch (commandtype){
                 case "list":
-                    Ui.listTasks(tasks);
+                    Ui.listTasks(tasks.fullList());
                     break;
                 case "mark":
                     try {
-                        idx = parser.getTaskIndex(tasks.getSize());
+                        int idx = parser.getTaskIndex(tasks.getSize());
+                        tasks.markThisTask(idx);
+                        Ui.showMark(tasks.getDescription(idx));
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
-                    tasks.markThisTask(idx);
                     try {
                         Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     }
-                    Ui.showMark(tasks.getDescription(idx));
                     break;
                 case "unmark":
                     try {
-                        idx = parser.getTaskIndex(tasks.getSize());
+                        int idx = parser.getTaskIndex(tasks.getSize());
+                        tasks.unMarkThisTask(idx);
+                        Ui.showUnmark(tasks.getDescription(idx));
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
-                    tasks.unMarkThisTask(idx);
                     try {
                         Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     }
-                    Ui.showUnmark(tasks.getDescription(idx));
                     break;
                 case "bye":
                     isEnd = true;
                     break;
                 case "todo":
-                    String tododetail = "";
                     try {
-                        tododetail = parser.getToDoDescription();
+                        String tododetail = parser.getToDoDescription();
+                        tasks.addToDo(tododetail);
+                        Ui.showAddTask(tasks.latesttask(),tasks.getSize());
                     } catch(LackOfTaskDetail e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     }
-                    tasks.addToDo(tododetail);
-                    Ui.showAddTask(tasks.latesttask(),tasks.getSize());
                     try {
                         Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     }
                     break;
                 case "deadline":
@@ -84,32 +81,32 @@ public class Duke {
                         String[] taskdetail = {};
                         try {
                             taskdetail = parser.getTaskWithTime(commandtype);
+                            tasks.addTaskWithTime(taskdetail, commandtype);
+                            Ui.showAddTask(tasks.latesttask(), tasks.getSize());
                         } catch (LackOfTaskDetail e) {
-                            System.out.println(e.getMessage());
+                            System.out.print(e.getMessage());
                         }
-                        tasks.addTaskWithTime(taskdetail, commandtype);
-                        Ui.showAddTask(tasks.latesttask(), tasks.getSize());
                         try {
                             Storage.autoSave(tasks.fullList());
                         } catch(IOException e) {
-                            System.out.println(e.getMessage());
+                            System.out.print(e.getMessage());
                         }
                     }
                     break;
                 case "delete":
                     try {
-                        idx = parser.getTaskIndex(tasks.getSize());
+                        int idx = parser.getTaskIndex(tasks.getSize());
+                        Ui.showDelete(tasks.getDescription(idx), tasks.getSize());
+                        tasks.deleteThisTask(idx);
                     } catch (TaskNumberOutOfRange e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     } catch (NumberFormatException e) {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
-                    Ui.showDelete(tasks.getDescription(idx), tasks.getSize());
-                    tasks.deleteThisTask(idx);
                     try {
                         Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
-                        System.out.println(e.getMessage());
+                        System.out.print(e.getMessage());
                     }
                     break;                    
                 default:
