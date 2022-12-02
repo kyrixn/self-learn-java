@@ -2,7 +2,6 @@ package duke;
 
 import duke.commands.*;
 import java.util.ArrayList;
-import duke.Ui;
 
 public class TaskList {
     protected ArrayList<Task> tasklist;

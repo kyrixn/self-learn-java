@@ -6,7 +6,6 @@ import java.util.Scanner;
 import duke.Ui;
 import duke.Parser;
 import duke.TaskList;
-import duke.commands.*;
 import duke.exceptions.*;
 
 public class Duke {

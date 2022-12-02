@@ -1,7 +1,6 @@
 package duke;
 
 import duke.exceptions.*;
-import duke.TaskList;
 
 public class Parser {
     protected static String splittedCommand[]; 
