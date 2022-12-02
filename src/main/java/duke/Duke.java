@@ -1,11 +1,7 @@
 package duke;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TimerTask;
 
 import duke.Ui;
 import duke.Parser;
@@ -14,56 +10,6 @@ import duke.commands.*;
 import duke.exceptions.*;
 
 public class Duke {
-    private static String line = "---------------------------------------------------------";
-
-    //done
-    private static void markThisTask(String command) throws TaskNumberOutOfRange{
-        int idx = Integer.parseInt(command)-1;
-        if(idx >= taskList.size() || idx < 0) {
-            throw new TaskNumberOutOfRange("   > task number out of range!!");
-        }
-        else {
-            taskList.get(idx).markAsDone();
-            System.out.println(line);
-            System.out.println("   > Nice! I've marked this task as done:");
-            System.out.println("   > "+taskList.get(idx).toString());
-            System.out.println(line);
-        }        
-    }
-
-    private static void unmarkThisTask(String command) throws TaskNumberOutOfRange{
-        int idx = Integer.parseInt(command)-1;
-        if(idx >= taskList.size() || idx < 0) {
-            throw new TaskNumberOutOfRange("task number out of range!!");
-        }
-        else {
-            taskList.get(idx).unmark();
-            System.out.println(line);
-            System.out.println("   > OK, I've marked this task as not done yet:");
-            System.out.println("   > "+taskList.get(idx).toString());
-            System.out.println(line);
-        }
-    }
-
-    private static void deleteThisTask(String command) throws TaskNumberOutOfRange{
-        int idx = Integer.parseInt(command)-1;
-        System.out.println(idx);
-        if(idx >= taskList.size() || idx < 0) {
-            throw new TaskNumberOutOfRange("   > task number out of range!!");
-        }
-        Task taskDiscription = taskList.get(idx);
-        taskList.remove(idx);
-        System.out.println(line+System.lineSeparator()+"Noted. I've removed this task:");
-        System.out.println("   > "+taskDiscription.toString());
-        System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
-    }
-
-    private static void showAddTask(Task taskDiscription) {
-        System.out.println(line+System.lineSeparator()+"Got it. I've added this task:");
-        System.out.println("   > "+taskDiscription.toString());
-        System.out.println("Now you have "+Integer.toString(taskList.size())+" tasks in the list."+System.lineSeparator()+line);
-    }
-
     public static void main(String[] args) {        
         Ui ui = new Ui();
         Parser parser = new Parser();
@@ -76,6 +22,7 @@ public class Duke {
         while(!isEnd) {
             String command = in.nextLine();
             String commandtype = parser.parseCommand(command);
+            int idx =0;
 
             switch (commandtype){
                 case "list":
@@ -83,7 +30,7 @@ public class Duke {
                     break;
                 case "mark":
                     try {
-                        int idx = parser.getTaskIndex(tasks);
+                        idx = parser.getTaskIndex(tasks.getSize());
                     } catch (TaskNumberOutOfRange e) {
                         System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
@@ -91,7 +38,7 @@ public class Duke {
                     }
                     tasks.markThisTask(idx);
                     try {
-                        Storage.autoSave();
+                        Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -99,7 +46,7 @@ public class Duke {
                     break;
                 case "unmark":
                     try {
-                        idx = parser.getTaskIndex(tasks);
+                        idx = parser.getTaskIndex(tasks.getSize());
                     } catch (TaskNumberOutOfRange e) {
                         System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
@@ -107,7 +54,7 @@ public class Duke {
                     }
                     tasks.unMarkThisTask(idx);
                     try {
-                        Storage.autoSave();
+                        Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -117,56 +64,41 @@ public class Duke {
                     isEnd = true;
                     break;
                 case "todo":
+                    String tododetail = "";
                     try {
-                        Todo newtodo = new Todo(splittedCommand[1]);
-                        taskList.add(newtodo);
-                        showAddTask(newtodo);
+                        tododetail = parser.getToDoDescription();
                     } catch(LackOfTaskDetail e) {
-                        System.out.println("   > lack of task detail");
+                        System.out.println(e.getMessage());
                     }
+                    tasks.addToDo(tododetail);
+                    Ui.showAddTask(tasks.latesttask(),tasks.getSize());
                     try {
-                        Storage.autoSave();
+                        Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case "deadline":
-                    try {
-                        String splittedDiscription[] = splittedCommand[1].split("/by ",2);                    
-                        Deadline newddl = new Deadline(splittedDiscription[0],splittedDiscription[1]);
-                        taskList.add(newddl);
-                        showAddTask(newddl);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a task and a deadline behind the task seperated by \"/by\" ");
-                    } catch (LackOfTaskDetail e) {
-                        System.out.println("   > lack of task detail!");
-                    }
-                    try {
-                        Storage.autoSave();
-                    } catch(IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
                 case "event":
-                    try {
-                        String[] splittedDiscription = splittedCommand[1].split("/at ",2);            
-                        Event newevent= new Event(splittedDiscription[0],splittedDiscription[1]);
-                        taskList.add(newevent);
-                        showAddTask(newevent);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("   > Please enter a task and a time behind the task seperated by \"/at\" ");
-                    } catch (LackOfTaskDetail e) {
-                        System.out.println("   > lack of task detail!");
-                    }
-                    try {
-                        Storage.autoSave();
-                    } catch(IOException e) {
-                        System.out.println(e.getMessage());
+                    {
+                        String[] taskdetail = {};
+                        try {
+                            taskdetail = parser.getTaskWithTime(commandtype);
+                        } catch (LackOfTaskDetail e) {
+                            System.out.println(e.getMessage());
+                        }
+                        tasks.addTaskWithTime(taskdetail, commandtype);
+                        Ui.showAddTask(tasks.latesttask(), tasks.getSize());
+                        try {
+                            Storage.autoSave(tasks.fullList());
+                        } catch(IOException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
                     break;
                 case "delete":
                     try {
-                        idx = parser.getTaskIndex(tasks);
+                        idx = parser.getTaskIndex(tasks.getSize());
                     } catch (TaskNumberOutOfRange e) {
                         System.out.println(e.getMessage());
                     } catch (NumberFormatException e) {
@@ -175,7 +107,7 @@ public class Duke {
                     Ui.showDelete(tasks.getDescription(idx), tasks.getSize());
                     tasks.deleteThisTask(idx);
                     try {
-                        Storage.autoSave();
+                        Storage.autoSave(tasks.fullList());
                     } catch(IOException e) {
                         System.out.println(e.getMessage());
                     }

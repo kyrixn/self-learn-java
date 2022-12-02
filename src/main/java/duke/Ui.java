@@ -52,4 +52,10 @@ public class Ui {
         System.out.println("   > "+ task);
         System.out.println("Now you have "+Integer.toString(size)+" tasks in the list."+System.lineSeparator()+line);
     }
+
+    public static void showAddTask(String taskDiscription, int size) {
+        System.out.println(line+System.lineSeparator()+"Got it. I've added this task:");
+        System.out.println("   > "+taskDiscription);
+        System.out.println("Now you have "+Integer.toString(size)+" tasks in the list."+System.lineSeparator()+line);
+    }
 }

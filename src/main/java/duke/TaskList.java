@@ -1,6 +1,6 @@
 package duke;
 
-import duke.commands.Task;
+import duke.commands.*;
 import java.util.ArrayList;
 import duke.Ui;
 
@@ -35,5 +35,32 @@ public class TaskList {
 
     public void deleteThisTask(int idx) {
         tasklist.remove(idx);
+        listsize--;
+    }
+
+    public void addToDo(String description) {
+        Todo newtodo = new Todo(description);
+        tasklist.add(newtodo);
+        listsize++;
+    }
+
+    public void addTaskWithTime(String[] description, String tasktype) {
+        if(tasktype.equals("deadline")) {
+            Deadline newddl = new Deadline(description[0],description[1]);
+            tasklist.add(newddl);
+        }
+        else {
+            Event newevent = new Event(description[0],description[1]);
+            tasklist.add(newevent);
+        }
+        listsize++;
+    }
+
+    public String latesttask() {
+        return tasklist.get(listsize-1).toString();
+    }
+
+    public ArrayList<Task> fullList() {
+        return this.tasklist;
     }
 }

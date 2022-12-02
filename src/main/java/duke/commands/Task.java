@@ -1,21 +1,14 @@
 package duke.commands;
 
-import duke.exceptions.LackOfTaskDetail;
-
 public class Task {
     protected String taskDiscription;
     protected boolean isDone;
 
-    public Task() throws LackOfTaskDetail {}
+    public Task(){}
 
-    public Task(String task) throws LackOfTaskDetail{
-        if (task.equals("")) {
-            throw new LackOfTaskDetail("No task discription!");
-        }
-        else{
-            this.taskDiscription = task;
-            this.isDone = false;
-        }
+    public Task(String task) {
+        this.taskDiscription = task;
+        this.isDone = false;
     }
 
     public String getTaskDiscription() {
