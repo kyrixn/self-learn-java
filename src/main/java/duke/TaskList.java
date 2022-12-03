@@ -12,6 +12,11 @@ public class TaskList {
         this.listsize = 0;
     }
 
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasklist = tasks;
+        this.listsize = tasks.size();
+    }
+
     public int getSize() {
         return listsize;
     }

@@ -9,10 +9,11 @@ import duke.TaskList;
 import duke.exceptions.*;
 
 public class Duke {
-    public static void main(String[] args) {        
+
+    public static void run(String path) {
         Ui ui = new Ui();
         Parser parser = new Parser();
-        TaskList tasks = new TaskList();
+        TaskList tasks = new TaskList(Storage.loadFile(path));
         Scanner in = new Scanner(System.in);
         boolean isEnd = false;
 
@@ -36,7 +37,7 @@ public class Duke {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
                     try {
-                        Storage.autoSave(tasks.fullList());
+                        Storage.autoSave(tasks.fullList(), path);
                     } catch(IOException e) {
                         System.out.print(e.getMessage());
                     }
@@ -52,7 +53,7 @@ public class Duke {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
                     try {
-                        Storage.autoSave(tasks.fullList());
+                        Storage.autoSave(tasks.fullList(), path);
                     } catch(IOException e) {
                         System.out.print(e.getMessage());
                     }
@@ -69,7 +70,7 @@ public class Duke {
                         System.out.print(e.getMessage());
                     }
                     try {
-                        Storage.autoSave(tasks.fullList());
+                        Storage.autoSave(tasks.fullList(), path);
                     } catch(IOException e) {
                         System.out.print(e.getMessage());
                     }
@@ -86,7 +87,7 @@ public class Duke {
                             System.out.print(e.getMessage());
                         }
                         try {
-                            Storage.autoSave(tasks.fullList());
+                            Storage.autoSave(tasks.fullList(), path);
                         } catch(IOException e) {
                             System.out.print(e.getMessage());
                         }
@@ -103,7 +104,7 @@ public class Duke {
                         System.out.println("   > Please enter a valid NUMBER!");
                     }
                     try {
-                        Storage.autoSave(tasks.fullList());
+                        Storage.autoSave(tasks.fullList(), path);
                     } catch(IOException e) {
                         System.out.print(e.getMessage());
                     }
@@ -117,4 +118,9 @@ public class Duke {
         Ui.printBye();
         in.close();
     }
+
+    public static void main(String[] args) {        
+        run("duke/data/duke.txt");
+    }
+    
 }

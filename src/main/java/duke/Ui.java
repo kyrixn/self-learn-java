@@ -22,8 +22,8 @@ public class Ui {
 
     public static void printNoCommand() {
         System.out.println(line);
-        System.out.print("   > Sorry, command not found" + System.lineSeparator()+"enter again: ");
-        System.out.println(line);    
+        System.out.println("   > Sorry, command not found");
+        System.out.print(line+System.lineSeparator()+"enter again: ");    
     }
 
     public static void listTasks(ArrayList<Task> tasks) {
