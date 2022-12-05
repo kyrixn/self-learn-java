@@ -6,6 +6,7 @@ import java.util.Scanner;
 import duke.Ui;
 import duke.Parser;
 import duke.TaskList;
+import duke.commands.Datetime;
 import duke.exceptions.*;
 
 public class Duke {
@@ -13,7 +14,8 @@ public class Duke {
     public static void run(String path) {
         Ui ui = new Ui();
         Parser parser = new Parser();
-        TaskList tasks = new TaskList(Storage.loadFile(path));
+        TaskList tasks = new TaskList();
+        // TaskList tasks = new TaskList(Storage.loadFile(path));
         Scanner in = new Scanner(System.in);
         boolean isEnd = false;
 
@@ -78,10 +80,8 @@ public class Duke {
                 case "deadline":
                 case "event":
                     {
-                        String[] taskdetail = {};
                         try {
-                            taskdetail = parser.getTaskWithTime(commandtype);
-                            tasks.addTaskWithTime(taskdetail, commandtype);
+                            tasks.addTaskWithTime(parser.getTaskDetail(commandtype), parser.getTaskTime(commandtype) ,commandtype);
                             Ui.showAddTask(tasks.latesttask(), tasks.getSize());
                         } catch (LackOfTaskDetail e) {
                             System.out.print(e.getMessage());

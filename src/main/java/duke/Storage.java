@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Date;
 
 import duke.commands.*;
 
@@ -15,6 +18,15 @@ public class Storage {
     private static String[] changeLoadedDescription(String dscrption) {
         String[] taskinfo = dscrption.split(" \\| ");
         return taskinfo;
+    }
+
+    private static Datetime convertToDT(String datetime) {
+        String[] splittedDT = datetime.split(" ");
+        if(splittedDT.length == 1) {
+            return new Datetime(LocalDate.parse(splittedDT[0]));
+        } else {
+            return new Datetime(LocalDate.parse(splittedDT[0]),LocalTime.parse(splittedDT[1]));
+        }
     }
 
     public static ArrayList<Task> loadFile(String path) {
@@ -29,8 +41,8 @@ public class Storage {
                 if(taskinfo[0].equals("T")) {
                     task.add(new Todo(taskinfo[2]));
                 }
-                else if(taskinfo[0].equals("E")) task.add(new Event(taskinfo[2],taskinfo[3]));
-                else task.add(new Deadline(taskinfo[2],taskinfo[3]));
+                else if(taskinfo[0].equals("E")) task.add(new Event(taskinfo[2], convertToDT(taskinfo[3])));
+                else task.add(new Deadline(taskinfo[2],convertToDT(taskinfo[3])));
 
                 if(taskinfo[1].equals("1")) task.get(task.size()-1).markAsDone();
             }

@@ -1,18 +1,27 @@
 package duke.commands;
 
-public class Deadline extends Task {
-    protected String due;
+import duke.commands.Datetime;
 
-    public Deadline(String discription, String due){
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class Deadline extends Task {
+    Datetime due;
+
+    static DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MMM/d/yyyy");
+    static DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    public Deadline(String discription, Datetime due) {
         super(discription);
         this.due = due;
     }
 
     public String getDue() {
-        return this.due;
+        return due.getDate().format(dateformatter)+ (!due.hasTime() ? "" : (" "+due.getTime().format(timeformatter)));
     }
 
     public String toString() {
-        return "[D]"+super.toString() + " ("+due+")";
+        return "[D]"+super.toString() + " ("+due.getDate().format(dateformatter)+ (!due.hasTime() ? "" : (" "+due.getTime().format(timeformatter)))+")";
     }
 }

@@ -1,5 +1,9 @@
 package duke;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import duke.commands.Datetime;
 import duke.exceptions.*;
 
 public class Parser {
@@ -28,13 +32,12 @@ public class Parser {
 
     public String getToDoDescription() throws LackOfTaskDetail {
         if(splittedCommand.length == 1 || splittedCommand[1].equals("")) {
-            System.out.println("yes");
             throw new LackOfTaskDetail("    > no task detail!"+System.lineSeparator()+": ");
         }
         return splittedCommand[1];
     }
 
-    public static String[] getTaskWithTime(String tasktype) throws LackOfTaskDetail {
+    private static String[] splitTime(String tasktype) throws LackOfTaskDetail {
         String splittedDiscription[];
         if(splittedCommand.length == 1 || splittedCommand[1].equals("")) {
             throw new LackOfTaskDetail("    > no task detail!"+System.lineSeparator()+": ");
@@ -42,15 +45,35 @@ public class Parser {
 
         if (tasktype.equals("deadline")) {
             splittedDiscription = splittedCommand[1].split(" /by ",2);                    
-        }
-        else {
+        } else {
             splittedDiscription = splittedCommand[1].split(" /at ",2);
         }
-
-        if(splittedDiscription.length == 1 || splittedDiscription[1].equals("")) {
-            throw new LackOfTaskDetail("    > please enter with compelete event/deadline (description /at(or /by) time)"+System.lineSeparator()+": ");
-        }
-
         return splittedDiscription;
+    }
+
+    public static String getTaskDetail(String tasktype) throws LackOfTaskDetail{
+        try {
+            String splittedDiscription[] = splitTime(tasktype);
+            return splittedDiscription[0];
+        } catch(LackOfTaskDetail e) {
+            throw new LackOfTaskDetail(e.getMessage());
+        }
+    }
+
+    public static Datetime getTaskTime(String tasktype) throws LackOfTaskDetail {
+        try {
+            String splittedDiscription[] = splitTime(tasktype);
+            String tasktime[] = splittedDiscription[1].split(" ");
+        
+            if(tasktime.length > 1) {
+                return new Datetime(LocalDate.parse(tasktime[0]), LocalTime.parse(tasktime[1]));
+            } else {
+                System.out.println(tasktime[0]);
+                return new Datetime(LocalDate.parse(tasktime[0]));
+            }
+
+        } catch(LackOfTaskDetail e) {
+            throw new LackOfTaskDetail(e.getMessage());
+        }
     }
 }
