@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,17 +21,20 @@ public class Storage {
         return taskinfo;
     }
 
-    private static Datetime convertToDT(String datetime) {
+    private static Datetime convertToDT(String datetime, DateTimeFormatter formatter) {
+        System.out.println("TYYYYY");
         String[] splittedDT = datetime.split(" ");
         if(splittedDT.length == 1) {
-            return new Datetime(LocalDate.parse(splittedDT[0]));
+            return new Datetime(LocalDate.parse(splittedDT[0], formatter));
         } else {
-            return new Datetime(LocalDate.parse(splittedDT[0]),LocalTime.parse(splittedDT[1]));
+            return new Datetime(LocalDate.parse(splittedDT[0], formatter),LocalTime.parse(splittedDT[1]));
         }
     }
 
     public static ArrayList<Task> loadFile(String path) {
         ArrayList<Task> task = new ArrayList<>();
+        DateTimeFormatter loadingformatter = DateTimeFormatter.ofPattern("MMM/dd/yyyy");
+
         try {
             Scanner scanner = new Scanner(new File(path));
             String curtask = "";
@@ -41,8 +45,8 @@ public class Storage {
                 if(taskinfo[0].equals("T")) {
                     task.add(new Todo(taskinfo[2]));
                 }
-                else if(taskinfo[0].equals("E")) task.add(new Event(taskinfo[2], convertToDT(taskinfo[3])));
-                else task.add(new Deadline(taskinfo[2],convertToDT(taskinfo[3])));
+                else if(taskinfo[0].equals("E")) task.add(new Event(taskinfo[2], convertToDT(taskinfo[3], loadingformatter)));
+                else task.add(new Deadline(taskinfo[2],convertToDT(taskinfo[3], loadingformatter)));
 
                 if(taskinfo[1].equals("1")) task.get(task.size()-1).markAsDone();
             }

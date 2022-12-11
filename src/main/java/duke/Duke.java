@@ -14,8 +14,8 @@ public class Duke {
     public static void run(String path) {
         Ui ui = new Ui();
         Parser parser = new Parser();
-        TaskList tasks = new TaskList();
-        // TaskList tasks = new TaskList(Storage.loadFile(path));
+        // TaskList tasks = new TaskList();
+        TaskList tasks = new TaskList(Storage.loadFile(path));
         Scanner in = new Scanner(System.in);
         boolean isEnd = false;
 
