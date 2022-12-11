@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class Event extends Task{
     Datetime due;
 
-    static DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    static DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MMM/dd/yyyy");
     static DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
 
     public Event(String discription, Datetime due) {

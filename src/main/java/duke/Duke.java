@@ -1,6 +1,7 @@
 package duke;
 
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import duke.Ui;
@@ -85,6 +86,9 @@ public class Duke {
                             Ui.showAddTask(tasks.latesttask(), tasks.getSize());
                         } catch (LackOfTaskDetail e) {
                             System.out.print(e.getMessage());
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Time format wrong!");
+                            System.out.println("correct format is yyyy-MM-dd hh:mm (time can be ommitted)");
                         }
                         try {
                             Storage.autoSave(tasks.fullList(), path);

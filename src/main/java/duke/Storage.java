@@ -22,7 +22,6 @@ public class Storage {
     }
 
     private static Datetime convertToDT(String datetime, DateTimeFormatter formatter) {
-        System.out.println("TYYYYY");
         String[] splittedDT = datetime.split(" ");
         if(splittedDT.length == 1) {
             return new Datetime(LocalDate.parse(splittedDT[0], formatter));

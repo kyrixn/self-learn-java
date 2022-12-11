@@ -67,8 +67,10 @@ public class Parser {
         
         try {
             String splittedDiscription[] = splitTime(tasktype);
+            if(splittedDiscription.length == 1 || splittedDiscription[1].equals("")) {
+                throw new LackOfTaskDetail("    > wrong task format!"+System.lineSeparator()+": ");
+            }
             String tasktime[] = splittedDiscription[1].split(" ");
-        
             if(tasktime.length > 1) {
                 return new Datetime(LocalDate.parse(tasktime[0]), LocalTime.parse(tasktime[1]));
             } else {
