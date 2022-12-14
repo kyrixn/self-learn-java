@@ -112,7 +112,15 @@ public class Duke {
                     } catch(IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    break;                    
+                    break;  
+                case "find":
+                    try {
+                        String keyword = parser.getKeyword();
+                        ui.listTasks(tasks.searchRelaventTask(keyword));
+                    } catch(LackOfTaskDetail e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 default:
                     Ui.printNoCommand();
                     break;

@@ -13,13 +13,18 @@ public class Parser {
 
     public Parser(){}
 
+    private static Boolean hasInfo() {
+        if (splittedCommand.length == 1 || splittedCommand[1].equals("")) return false;
+        return true;
+    }
+
     public String parseCommand(String com) {
         splittedCommand = com.split(" ",2); 
         return splittedCommand[0];
     }
 
     public int getTaskIndex(int tasksize) throws TaskNumberOutOfRange {
-        if (splittedCommand.length == 1 || splittedCommand[1].equals("")) {
+        if (!hasInfo()) {
             throw new TaskNumberOutOfRange("    > no task number!"+System.lineSeparator()+": ");
         }
 
@@ -33,7 +38,7 @@ public class Parser {
     }
 
     public String getToDoDescription() throws LackOfTaskDetail {
-        if(splittedCommand.length == 1 || splittedCommand[1].equals("")) {
+        if(!hasInfo()) {
             throw new LackOfTaskDetail("    > no task detail!"+System.lineSeparator()+": ");
         }
         return splittedCommand[1];
@@ -41,7 +46,7 @@ public class Parser {
 
     private static String[] splitTime(String tasktype) throws LackOfTaskDetail {
         String splittedDiscription[];
-        if(splittedCommand.length == 1 || splittedCommand[1].equals("")) {
+        if(!hasInfo()) {
             throw new LackOfTaskDetail("    > no task detail!"+System.lineSeparator()+": ");
         }
 
@@ -81,5 +86,12 @@ public class Parser {
         } catch(LackOfTaskDetail e) {
             throw new LackOfTaskDetail(e.getMessage());
         }
+    }
+
+    public static String getKeyword() throws LackOfTaskDetail {
+        if(!hasInfo()) {
+            throw new LackOfTaskDetail("    > no keyword to search!"+System.lineSeparator()+":");
+        }
+        return splittedCommand[1];
     }
 }
