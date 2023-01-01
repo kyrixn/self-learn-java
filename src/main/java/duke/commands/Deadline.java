@@ -12,8 +12,8 @@ public class Deadline extends Task {
     static DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MMM/dd/yyyy");
     static DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    public Deadline(String discription, Datetime due) {
-        super(discription);
+    public Deadline(String discription, int idx, Datetime due) {
+        super(discription, idx);
         this.due = due;
     }
 

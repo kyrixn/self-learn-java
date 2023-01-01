@@ -42,19 +42,19 @@ public class TaskList {
         listsize--;
     }
 
-    public void addToDo(String description) {
-        Todo newtodo = new Todo(description);
+    public void addToDo(String description, int idx) {
+        Todo newtodo = new Todo(description, idx);
         tasklist.add(newtodo);
         listsize++;
     }
 
-    public void addTaskWithTime(String description, Datetime dt, String tasktype) {
+    public void addTaskWithTime(String description, Datetime dt, String tasktype, int idx) {
         if(tasktype.equals("deadline")) {
-            Deadline newddl = new Deadline(description, dt);
+            Deadline newddl = new Deadline(description, idx, dt);
             tasklist.add(newddl);
         }
         else {
-            Event newevent = new Event(description, dt);
+            Event newevent = new Event(description, idx, dt);
             tasklist.add(newevent);
         }
         listsize++;

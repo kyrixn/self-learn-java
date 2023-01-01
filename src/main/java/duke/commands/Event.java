@@ -12,8 +12,8 @@ public class Event extends Task{
     static DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MMM/dd/yyyy");
     static DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    public Event(String discription, Datetime due) {
-        super(discription);
+    public Event(String discription, int idx, Datetime due) {
+        super(discription, idx);
         this.due = due;
     }
 

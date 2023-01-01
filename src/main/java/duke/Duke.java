@@ -67,7 +67,7 @@ public class Duke {
                 case "todo":
                     try {
                         String tododetail = parser.getToDoDescription();
-                        tasks.addToDo(tododetail);
+                        tasks.addToDo(tododetail, tasks.getSize()+1);
                         Ui.showAddTask(tasks.latesttask(),tasks.getSize());
                     } catch(LackOfTaskDetail e) {
                         System.out.print(e.getMessage());
@@ -82,7 +82,7 @@ public class Duke {
                 case "event":
                     {
                         try {
-                            tasks.addTaskWithTime(parser.getTaskDetail(commandtype), parser.getTaskTime(commandtype) ,commandtype);
+                            tasks.addTaskWithTime(parser.getTaskDetail(commandtype), parser.getTaskTime(commandtype) ,commandtype, tasks.getSize()+1);
                             Ui.showAddTask(tasks.latesttask(), tasks.getSize());
                         } catch (LackOfTaskDetail e) {
                             System.out.print(e.getMessage());
